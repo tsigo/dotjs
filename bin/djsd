@@ -32,14 +32,21 @@ dotjs = Class.new(WEBrick::HTTPServlet::AbstractServlet) do
 
     until paths.empty?
       file = File.expand_path(paths.join('.'))
-      files << file if File.file?(file)
+
+      files << file if File.file?(file) || File.file?(file + '.coffee')
+
       paths.shift
     end
 
     body = "// dotjs is working! //\n"
 
     files.each do |file|
-      body << File.read(file) + "\n" if File.file?(file)
+      if File.file?(file)
+        body << File.read(file) + "\n"
+      elsif File.file?(file + '.coffee')
+        body << "// compiling #{file + '.coffee'} //\n"
+        body << `zsh -c "coffee -bp #{file + '.coffee'} 2>&1"` + "\n"
+      end
     end
 
     body
