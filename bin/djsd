@@ -11,6 +11,8 @@ if ARGV.include?('-v')
   exit
 end
 
+Dir.chdir(File.expand_path("~/.js"))
+
 require 'webrick'
 require 'webrick/https'
 
