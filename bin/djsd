@@ -47,7 +47,7 @@ dotjs = Class.new(WEBrick::HTTPServlet::AbstractServlet) do
         body << File.read(file) + "\n"
       elsif File.file?(file + '.coffee')
         body << "// compiling #{file + '.coffee'} //\n"
-        body << `zsh -c "coffee -bp #{file + '.coffee'} 2>&1"` + "\n"
+        body << `zsh -l -c "coffee -bp #{file + '.coffee'} 2>&1"` + "\n"
       end
     end
 
